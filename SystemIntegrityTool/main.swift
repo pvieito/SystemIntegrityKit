@@ -9,15 +9,26 @@
 import Foundation
 import IOKit
 
-let entry = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/options")
+let systemIntegrityConfiguration: SystemIntegrityOptions = [.allowTaskForPID,
+                                                           .allowKernelDebbuger,
+                                                           .allowAppleInternal,
+                                                           .allowDestructiveDtrace,
+                                                           .allowUnrestrictedDtrace,
+                                                           .allowUnrestrictedNvram]
 
-guard entry != 0 else {
+print("Setting System Integrity Protection with configuration “\(systemIntegrityConfiguration)”...")
+
+let nvramOptionsEntry = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/options")
+
+guard nvramOptionsEntry != 0 else {
     print("IORegistry invalid path.")
     exit(-1)
 }
 
-let noRestrictions = Data(bytes: [0xFF, 0x00, 0x00, 0x00])
-let result = IORegistryEntrySetCFProperty(entry, "csr-active-config" as CFString, noRestrictions as CFData)
+let systemIntegrityPropertyName = "csr-active-config"
+let result = IORegistryEntrySetCFProperty(nvramOptionsEntry,
+                                          systemIntegrityPropertyName as CFString,
+                                          systemIntegrityConfiguration.data as CFData)
 
 guard result == KERN_SUCCESS else {
     print("Error setting the IORegistry property: \(result).")

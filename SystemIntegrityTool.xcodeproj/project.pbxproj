@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AAA54C341FF83B3400200130 /* SystemIntegrityOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA54C331FF83B3400200130 /* SystemIntegrityOptions.swift */; };
 		AAB5303C1F087FDE002FC74D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB5303B1F087FDE002FC74D /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		AA628A9C1F088CA4003B7D25 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		AAA54C331FF83B3400200130 /* SystemIntegrityOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemIntegrityOptions.swift; sourceTree = "<group>"; };
 		AAB530381F087FDE002FC74D /* SystemIntegrityTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SystemIntegrityTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAB5303B1F087FDE002FC74D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		AAB530451F088029002FC74D /* SystemIntegrityTool.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SystemIntegrityTool.entitlements; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				AAB5303B1F087FDE002FC74D /* main.swift */,
+				AAA54C331FF83B3400200130 /* SystemIntegrityOptions.swift */,
 				AAB530451F088029002FC74D /* SystemIntegrityTool.entitlements */,
 			);
 			path = SystemIntegrityTool;
@@ -93,7 +96,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Pedro José Pereira Vieito";
 				TargetAttributes = {
 					AAB530371F087FDE002FC74D = {
@@ -124,6 +127,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAB5303C1F087FDE002FC74D /* main.swift in Sources */,
+				AAA54C341FF83B3400200130 /* SystemIntegrityOptions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,6 +154,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
@@ -205,6 +211,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
