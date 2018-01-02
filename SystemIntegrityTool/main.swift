@@ -9,19 +9,34 @@
 import Foundation
 import IOKit
 
-let systemIntegrityConfiguration: SystemIntegrityOptions = [.allowTaskForPID,
-                                                           .allowKernelDebbuger,
-                                                           .allowAppleInternal,
-                                                           .allowDestructiveDtrace,
-                                                           .allowUnrestrictedDtrace,
-                                                           .allowUnrestrictedNvram]
+var systemIntegrityConfiguration: SystemIntegrityConfiguration
 
-print("Setting System Integrity Protection with configuration “\(systemIntegrityConfiguration)”...")
+if CommandLine.arguments.count == 2 {
+    let binaryConfiguration = CommandLine.arguments[1]
+    guard let rawValueConfiguration = UInt32(binaryConfiguration, radix: 2) else {
+        print("[x] Invalid input configuration “\(binaryConfiguration)”.")
+        exit(-1)
+    }
+    
+    systemIntegrityConfiguration = SystemIntegrityConfiguration(rawValue: rawValueConfiguration)
+}
+else {
+    systemIntegrityConfiguration = [.allowUnrescrictedFilesystem,
+                                    .allowTaskForPID,
+                                    .allowKernelDebbuger,
+                                    .allowAppleInternal,
+                                    .allowUnrestrictedDtrace,
+                                    .allowUnrestrictedNvram,
+                                    .allowDeviceConfiguration]
+}
+
+
+print("[!] Setting System Integrity Protection with configuration “\(systemIntegrityConfiguration)”...")
 
 let nvramOptionsEntry = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/options")
 
 guard nvramOptionsEntry != 0 else {
-    print("IORegistry invalid path.")
+    print("[x] IORegistry invalid path.")
     exit(-1)
 }
 
@@ -31,8 +46,8 @@ let result = IORegistryEntrySetCFProperty(nvramOptionsEntry,
                                           systemIntegrityConfiguration.data as CFData)
 
 guard result == KERN_SUCCESS else {
-    print("Error setting the IORegistry property: \(result).")
+    print("[x] Error setting the IORegistry property: \(result).")
     exit(-1)
 }
 
-print("Success!")
+print("[*] Success!")
