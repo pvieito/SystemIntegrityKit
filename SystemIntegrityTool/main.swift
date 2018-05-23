@@ -7,47 +7,69 @@
 //
 
 import Foundation
-import IOKit
+import LoggerKit
+import CommandLineKit
+import SystemIntegrityKit
 
-var systemIntegrityConfiguration: SystemIntegrityConfiguration
+let inputOption = StringOption(shortFlag: "i", longFlag: "input", helpMessage: "Input binary configuration.")
+let unrestrictedOption = BoolOption(shortFlag: "u", longFlag: "unrestricted", helpMessage: "Unrestricted configuration.")
+let setOption = BoolOption(shortFlag: "s", longFlag: "set", helpMessage: "Set input configuration.")
+let verboseOption = BoolOption(shortFlag: "v", longFlag: "verbose", helpMessage: "Verbose mode.")
+let debugOption = BoolOption(shortFlag: "d", longFlag: "debug", helpMessage: "Debug mode.")
+let helpOption = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Prints a help message.")
 
-if CommandLine.arguments.count == 2 {
-    let binaryConfiguration = CommandLine.arguments[1]
-    guard let rawValueConfiguration = UInt32(binaryConfiguration, radix: 2) else {
-        print("[x] Invalid input configuration “\(binaryConfiguration)”.")
+let cli = CommandLineKit.CommandLine()
+cli.addOptions(inputOption, unrestrictedOption, setOption, verboseOption, debugOption, helpOption)
+
+do {
+    try cli.parse(strict: true)
+}
+catch {
+    cli.printUsage(error)
+    exit(EX_USAGE)
+}
+
+if helpOption.value {
+    cli.printUsage()
+    exit(-1)
+}
+
+Logger.logMode = .commandLine
+Logger.logLevel = verboseOption.value ? .verbose : .info
+Logger.logLevel = debugOption.value ? .debug : Logger.logLevel
+    
+
+var inputConfiguration: SystemIntegrityConfiguration
+var configurationName: String
+
+if let binaryConfiguration = inputOption.value {
+    guard let configuration = SystemIntegrityConfiguration(binaryConfiguration: binaryConfiguration) else {
+        Logger.log(error: "Invalid input configuration “\(binaryConfiguration)”.")
         exit(-1)
     }
     
-    systemIntegrityConfiguration = SystemIntegrityConfiguration(rawValue: rawValueConfiguration)
+    inputConfiguration = configuration
+    configurationName = "Input"
+}
+else if unrestrictedOption.value {
+    inputConfiguration = .unrestricted
+    configurationName = "Unrestricted"
 }
 else {
-    systemIntegrityConfiguration = [.allowUnrescrictedFilesystem,
-                                    .allowTaskForPID,
-                                    .allowKernelDebbuger,
-                                    .allowAppleInternal,
-                                    .allowUnrestrictedDtrace,
-                                    .allowUnrestrictedNvram,
-                                    .allowDeviceConfiguration]
+    inputConfiguration = SystemIntegrityManager.currentConfiguration
+    configurationName = "Current"
 }
 
+inputConfiguration.printDetails(name: configurationName)
 
-print("[!] Setting System Integrity Protection with configuration “\(systemIntegrityConfiguration)”...")
-
-let nvramOptionsEntry = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/options")
-
-guard nvramOptionsEntry != 0 else {
-    print("[x] IORegistry invalid path.")
-    exit(-1)
+if setOption.value {
+    Logger.log(debug: "Setting System Integrity Protection configuration to “\(inputConfiguration)”...")
+    
+    do {
+        try SystemIntegrityManager.setConfiguration(to: inputConfiguration)
+        Logger.log(success: "System Integrity Protection successfully set to “\(inputConfiguration)”.")
+    }
+    catch {
+        Logger.log(error: error)
+    }
 }
-
-let systemIntegrityPropertyName = "csr-active-config"
-let result = IORegistryEntrySetCFProperty(nvramOptionsEntry,
-                                          systemIntegrityPropertyName as CFString,
-                                          systemIntegrityConfiguration.data as CFData)
-
-guard result == KERN_SUCCESS else {
-    print("[x] Error setting the IORegistry property: \(result).")
-    exit(-1)
-}
-
-print("[*] Success!")
