@@ -9,8 +9,8 @@ let package = Package(
         .library(name: "SystemIntegrityKit", targets: ["SystemIntegrityKit"]),
     ],
     dependencies: [
-        .package(url: "../CommandLineKit", .branch("master")),
-        .package(url: "../LoggerKit", .branch("master")),
+        .package(url: "https://github.com/pvieito/CommandLineKit.git", .branch("master")),
+        .package(url: "https://github.com/pvieito/LoggerKit.git", .branch("master"))
     ],
     targets: [
         .target(name: "SystemIntegrityTool", dependencies: ["LoggerKit", "CommandLineKit", "SystemIntegrityKit"], path: "SystemIntegrityTool"),
