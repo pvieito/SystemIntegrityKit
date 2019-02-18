@@ -31,7 +31,7 @@ catch {
 
 if helpOption.value {
     cli.printUsage()
-    exit(-1)
+    exit(0)
 }
 
 Logger.logMode = .commandLine
@@ -44,8 +44,7 @@ var configurationName: String
 
 if let binaryConfiguration = inputOption.value {
     guard let configuration = SystemIntegrityConfiguration(binaryConfiguration: binaryConfiguration) else {
-        Logger.log(error: "Invalid input configuration “\(binaryConfiguration)”.")
-        exit(-1)
+        Logger.log(fatalError: "Invalid input configuration “\(binaryConfiguration)”.")
     }
     
     inputConfiguration = configuration
@@ -70,6 +69,6 @@ if setOption.value {
         Logger.log(success: "System Integrity Protection successfully set to “\(inputConfiguration)”.")
     }
     catch {
-        Logger.log(error: error)
+        Logger.log(fatalError: error)
     }
 }
