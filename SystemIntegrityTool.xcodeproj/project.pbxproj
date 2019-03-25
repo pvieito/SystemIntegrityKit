@@ -17,6 +17,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AA804F8422483C220006A522 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAD000A920B60CF7000604BA /* CommandLineKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AABB3B53220FB42A00DEE6F4;
+			remoteInfo = CommandLineKitTests;
+		};
 		AAD000A520B60CEA000604BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AAD000A020B60CEA000604BA /* LoggerKit.xcodeproj */;
@@ -54,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		AA628A9C1F088CA4003B7D25 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		AA804F8122483C220006A522 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		AA93C02520B6225C00138DC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AAA54C331FF83B3400200130 /* SystemIntegrityOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemIntegrityOptions.swift; sourceTree = "<group>"; };
 		AAB530381F087FDE002FC74D /* SystemIntegrityTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SystemIntegrityTool; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,6 +102,7 @@
 				AAD000A920B60CF7000604BA /* CommandLineKit.xcodeproj */,
 				AAD000A020B60CEA000604BA /* LoggerKit.xcodeproj */,
 				AA628A9C1F088CA4003B7D25 /* README.md */,
+				AA804F8122483C220006A522 /* Package.swift */,
 				AAB5303A1F087FDE002FC74D /* SystemIntegrityTool */,
 				AAD000C520B620A5000604BA /* SystemIntegrityKit */,
 				AAB530391F087FDE002FC74D /* Products */,
@@ -134,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				AAD000AE20B60CF7000604BA /* CommandLineKit.framework */,
+				AA804F8522483C220006A522 /* CommandLineKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,9 +225,11 @@
 				TargetAttributes = {
 					AAB530371F087FDE002FC74D = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1020;
 					};
 					AAD000C320B620A5000604BA = {
 						CreatedOnToolsVersion = 9.3.1;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -228,6 +240,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = AAB5302F1F087FDE002FC74D;
 			productRefGroup = AAB530391F087FDE002FC74D /* Products */;
@@ -251,6 +264,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		AA804F8522483C220006A522 /* CommandLineKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = CommandLineKitTests.xctest;
+			remoteRef = AA804F8422483C220006A522 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		AAD000A620B60CEA000604BA /* LoggerKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -426,7 +446,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				LIBRARY_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -440,7 +460,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				LIBRARY_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -465,7 +485,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pvieito.SystemIntegrityKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -492,7 +512,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pvieito.SystemIntegrityKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};

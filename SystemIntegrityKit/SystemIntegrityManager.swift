@@ -43,7 +43,7 @@ public class SystemIntegrityManager {
             return .default
         }
         
-        let rawValue: UInt32 = data.withUnsafeBytes { $0.pointee }
+        let rawValue: UInt32 = data.withUnsafeBytes { $0.bindMemory(to: UInt32.self).baseAddress!.pointee }
         return SystemIntegrityConfiguration(rawValue: rawValue)
     }
     

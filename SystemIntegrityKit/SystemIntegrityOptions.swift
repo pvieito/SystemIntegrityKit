@@ -77,8 +77,8 @@ public struct SystemIntegrityConfiguration: OptionSet, CustomStringConvertible {
         }
     }
     
-    public static let `default`                    = SystemIntegrityConfiguration(rawValue: 0)
-    public static let unrestricted                 = SystemIntegrityConfiguration(rawValue: UInt32.max)
+    public static let `default` = SystemIntegrityConfiguration(rawValue: 0)
+    public static let unrestricted = SystemIntegrityConfiguration(rawValue: UInt32.max)
     
     public let rawValue: UInt32
 
