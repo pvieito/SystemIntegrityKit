@@ -37,38 +37,37 @@ if helpOption.value {
 Logger.logMode = .commandLine
 Logger.logLevel = verboseOption.value ? .verbose : .info
 Logger.logLevel = debugOption.value ? .debug : Logger.logLevel
+
+do {
+    var inputConfiguration: SystemIntegrityConfiguration
+    var configurationName: String
     
-
-var inputConfiguration: SystemIntegrityConfiguration
-var configurationName: String
-
-if let binaryConfiguration = inputOption.value {
-    guard let configuration = SystemIntegrityConfiguration(binaryConfiguration: binaryConfiguration) else {
-        Logger.log(fatalError: "Invalid input configuration “\(binaryConfiguration)”.")
+    if let binaryConfiguration = inputOption.value {
+        guard let configuration = SystemIntegrityConfiguration(binaryConfiguration: binaryConfiguration) else {
+            Logger.log(fatalError: "Invalid input configuration “\(binaryConfiguration)”.")
+        }
+        
+        inputConfiguration = configuration
+        configurationName = "Input"
+    }
+    else if unrestrictedOption.value {
+        inputConfiguration = .unrestricted
+        configurationName = "Unrestricted"
+    }
+    else {
+        inputConfiguration = try SystemIntegrityManager.readCurrentConfiguration()
+        configurationName = "Current"
     }
     
-    inputConfiguration = configuration
-    configurationName = "Input"
-}
-else if unrestrictedOption.value {
-    inputConfiguration = .unrestricted
-    configurationName = "Unrestricted"
-}
-else {
-    inputConfiguration = SystemIntegrityManager.currentConfiguration
-    configurationName = "Current"
-}
-
-inputConfiguration.printDetails(name: configurationName)
-
-if setOption.value {
-    Logger.log(debug: "Setting System Integrity Protection configuration to “\(inputConfiguration)”...")
+    inputConfiguration.printDetails(name: configurationName)
     
-    do {
+    if setOption.value {
+        Logger.log(debug: "Setting System Integrity Protection configuration to “\(inputConfiguration)”...")
+        
         try SystemIntegrityManager.setConfiguration(to: inputConfiguration)
         Logger.log(success: "System Integrity Protection successfully set to “\(inputConfiguration)”.")
     }
-    catch {
-        Logger.log(fatalError: error)
-    }
+}
+catch {
+    Logger.log(fatalError: error)
 }

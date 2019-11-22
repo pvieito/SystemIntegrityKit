@@ -11,9 +11,7 @@ import LoggerKit
 import SystemIntegrityKit
 
 extension SystemIntegrityConfiguration {
-    
     func printDetails(name: String) {
-        
         Logger.log(important: "\(name) System Integrity Protection Configuration")
         Logger.log(info: "Raw Value: \(self)")
         

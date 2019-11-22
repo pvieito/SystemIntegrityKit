@@ -9,7 +9,6 @@
 import Foundation
 
 public struct SystemIntegrityConfiguration: OptionSet, CustomStringConvertible {
-    
     public enum KnownConfiguration: UInt32, CaseIterable, CustomStringConvertible {
         case allowUntrustedKexts
         case allowUnrescrictedFilesystem

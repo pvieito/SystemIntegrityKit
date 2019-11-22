@@ -27,6 +27,10 @@ let package = Package(
         .target(
             name: "SystemIntegrityKit",
             path: "SystemIntegrityKit"
+        ),
+        .testTarget(
+            name: "SystemIntegrityKitTests",
+            dependencies: ["SystemIntegrityKit"]
         )
     ]
 )
