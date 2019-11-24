@@ -1,6 +1,6 @@
-#  SystemIntegrityTool
+#  SystemIntegrityKit
 
-Tool to set arbitrary System Integrity Protection configurations.
+Swift framework and tool to read and set arbitrary System Integrity Protection configurations.
 
 ### Note
 
