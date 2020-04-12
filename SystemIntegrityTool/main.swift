@@ -8,66 +8,68 @@
 
 import Foundation
 import LoggerKit
-import CommandLineKit
 import SystemIntegrityKit
+import ArgumentParser
 
-let inputOption = StringOption(shortFlag: "i", longFlag: "input", helpMessage: "Input binary configuration.")
-let unrestrictedOption = BoolOption(shortFlag: "u", longFlag: "unrestricted", helpMessage: "Unrestricted configuration.")
-let setOption = BoolOption(shortFlag: "s", longFlag: "set", helpMessage: "Set input configuration.")
-let verboseOption = BoolOption(shortFlag: "v", longFlag: "verbose", helpMessage: "Verbose mode.")
-let debugOption = BoolOption(shortFlag: "d", longFlag: "debug", helpMessage: "Debug mode.")
-let helpOption = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Prints a help message.")
-
-let cli = CommandLineKit.CommandLine()
-cli.addOptions(inputOption, unrestrictedOption, setOption, verboseOption, debugOption, helpOption)
-
-do {
-    try cli.parse(strict: true)
-}
-catch {
-    cli.printUsage(error)
-    exit(EX_USAGE)
-}
-
-if helpOption.value {
-    cli.printUsage()
-    exit(0)
-}
-
-Logger.logMode = .commandLine
-Logger.logLevel = verboseOption.value ? .verbose : .info
-Logger.logLevel = debugOption.value ? .debug : Logger.logLevel
-
-do {
-    var inputConfiguration: SystemIntegrityConfiguration
-    var configurationName: String
+struct SystemIntegrityTool: ParsableCommand {
+    static var configuration: CommandConfiguration {
+        return CommandConfiguration(commandName: String(describing: Self.self))
+    }
     
-    if let binaryConfiguration = inputOption.value {
-        guard let configuration = SystemIntegrityConfiguration(binaryConfiguration: binaryConfiguration) else {
-            Logger.log(fatalError: "Invalid input configuration “\(binaryConfiguration)”.")
+    @Option(name: .shortAndLong, help: "Input binary configuration.")
+    var input: String?
+    
+    @Flag(name: .shortAndLong, help: "Unrestricted configuration.")
+    var unrestricted: Bool
+
+    @Flag(name: .shortAndLong, help: "Set input configuration.")
+    var set: Bool
+
+    @Flag(name: .shortAndLong, help: "Verbose mode.")
+    var verbose: Bool
+    
+    @Flag(name: .shortAndLong, help: "Debug mode.")
+    var debug: Bool
+    
+    func run() throws {
+        do {
+            Logger.logMode = .commandLine
+            Logger.logLevel = verbose ? .verbose : .info
+            Logger.logLevel = debug ? .debug : Logger.logLevel
+
+            var inputConfiguration: SystemIntegrityConfiguration
+            var configurationName: String
+            
+            if let binaryConfiguration = self.input {
+                guard let configuration = SystemIntegrityConfiguration(binaryConfiguration: binaryConfiguration) else {
+                    Logger.log(fatalError: "Invalid input configuration “\(binaryConfiguration)”.")
+                }
+                
+                inputConfiguration = configuration
+                configurationName = "Input"
+            }
+            else if unrestricted {
+                inputConfiguration = .unrestricted
+                configurationName = "Unrestricted"
+            }
+            else {
+                inputConfiguration = try SystemIntegrityManager.readCurrentConfiguration()
+                configurationName = "Current"
+            }
+            
+            inputConfiguration.printDetails(name: configurationName)
+            
+            if set {
+                Logger.log(debug: "Setting System Integrity Protection configuration to “\(inputConfiguration)”...")
+                
+                try SystemIntegrityManager.setConfiguration(to: inputConfiguration)
+                Logger.log(success: "System Integrity Protection successfully set to “\(inputConfiguration)”.")
+            }
         }
-        
-        inputConfiguration = configuration
-        configurationName = "Input"
-    }
-    else if unrestrictedOption.value {
-        inputConfiguration = .unrestricted
-        configurationName = "Unrestricted"
-    }
-    else {
-        inputConfiguration = try SystemIntegrityManager.readCurrentConfiguration()
-        configurationName = "Current"
-    }
-    
-    inputConfiguration.printDetails(name: configurationName)
-    
-    if setOption.value {
-        Logger.log(debug: "Setting System Integrity Protection configuration to “\(inputConfiguration)”...")
-        
-        try SystemIntegrityManager.setConfiguration(to: inputConfiguration)
-        Logger.log(success: "System Integrity Protection successfully set to “\(inputConfiguration)”.")
+        catch {
+            Logger.log(fatalError: error)
+        }
     }
 }
-catch {
-    Logger.log(fatalError: error)
-}
+
+SystemIntegrityTool.main()

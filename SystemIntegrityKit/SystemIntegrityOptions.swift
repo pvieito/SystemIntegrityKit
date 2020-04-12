@@ -76,7 +76,7 @@ public struct SystemIntegrityConfiguration: OptionSet, CustomStringConvertible {
         }
     }
     
-    public static let `default` = SystemIntegrityConfiguration(rawValue: 0)
+    public static let `default`: SystemIntegrityConfiguration = []
     public static let unrestricted = SystemIntegrityConfiguration(rawValue: UInt32.max)
     
     public let rawValue: UInt32
@@ -98,8 +98,7 @@ public struct SystemIntegrityConfiguration: OptionSet, CustomStringConvertible {
     }
     
     internal var data: Data {
-        var rawValue = self.rawValue
-        return Data(buffer: UnsafeBufferPointer(start: &rawValue, count: 1))
+        return withUnsafeBytes(of: self.rawValue) { Data($0) }
     }
     
     public func allows(configuration: KnownConfiguration) -> Bool {
