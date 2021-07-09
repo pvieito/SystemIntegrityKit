@@ -20,16 +20,16 @@ struct SystemIntegrityTool: ParsableCommand {
     var input: String?
     
     @Flag(name: .shortAndLong, help: "Unrestricted configuration.")
-    var unrestricted: Bool
+    var unrestricted: Bool = false
 
     @Flag(name: .shortAndLong, help: "Set input configuration.")
-    var set: Bool
+    var set: Bool = false
 
     @Flag(name: .shortAndLong, help: "Verbose mode.")
-    var verbose: Bool
+    var verbose: Bool = false
     
     @Flag(name: .shortAndLong, help: "Debug mode.")
-    var debug: Bool
+    var debug: Bool = false
     
     func run() throws {
         do {
